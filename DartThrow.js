@@ -11,11 +11,12 @@ AFRAME.registerComponent("dart-throw", {
   },
   shoot() {
     const scene = document.querySelector("#scene");
-    const cam = document.querySelector("#camera");
+    const cam = document.querySelector("#player");
     const pos = cam.getAttribute("position");
     const dart = document.createElement("a-entity");
-    dart.id = "dart";
+    dart.className = "dart";
     const dir = cam.object3D.getWorldDirection();
+    dart.setAttribute("out-of-bounds-destroy");
     dart.setAttribute("position", { x: pos.x, y: pos.y, z: pos.z });
     dart.setAttribute("material", { color: "blue" });
     dart.setAttribute("geometry", { primitive: "sphere", radius: 0.1 });
@@ -23,6 +24,7 @@ AFRAME.registerComponent("dart-throw", {
     dart.setAttribute("velocity", dir.multiplyScalar(-10));
     dart.addEventListener("collide", (e) => this.handleCollision(e));
     scene.append(dart);
+    console.log(document.querySelectorAll(".dart").length);
   },
   handleCollision(e) {
     if (e.detail.body.el.id !== "board") return;
@@ -50,5 +52,17 @@ AFRAME.registerComponent("dart-board", {
     if (pos.x < -10) {
       this.el.setAttribute("velocity", { x: 2, y: 0, z: 0 });
     }
+  },
+});
+
+AFRAME.registerComponent("out-of-bounds-destroy", {
+  tick() {
+    if (this.el.object3D.position.z < -75) {
+      this.destroy();
+    }
+  },
+  destroy() {
+    const scene = document.querySelector("#scene");
+    scene.removeChild(this.el);
   },
 });

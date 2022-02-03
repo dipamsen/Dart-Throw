@@ -10,11 +10,17 @@
     <!-- aframe physics -->
     <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="DartThrow.js"></script>
+    <script src="PlayerMovement.js"></script>
+    <script src="SceneMovement.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <a-scene physics="debug: true" dart-throw id="scene">
-      <a-entity id="camera" camera look-controls position="0 0 2"></a-entity>
+    <a-scene dart-throw id="scene">
+      <a-entity id="player" player-movement>
+        <a-entity id="camera" camera look-controls scene-move>
+          <a-entity cursor></a-entity>
+        </a-entity>
+      </a-entity>
 
       <a-plane
         id="base"
@@ -28,12 +34,19 @@
         id="board"
         dart-board
         static-body
-        position="0 0 -40"
+        position="0 7 -40"
         rotation="90 0 0"
         material="color: yellow"
         height="0.1"
         radius="5"
       >
+        <a-box
+          id="stand"
+          color="black"
+          height="10"
+          rotation="90 0 0"
+          position="0 -2 6"
+        ></a-box>
         <a-cylinder
           position="0 0.1 0"
           material="color: red"
@@ -56,6 +69,41 @@
         >
         </a-cylinder>
       </a-cylinder>
+
+      <a-plane
+        id="wall1"
+        color="orange"
+        position="0 20 -50"
+        width="150"
+        height="50"
+      >
+      </a-plane>
+      <a-plane
+        id="wall2"
+        color="orange"
+        position="-75 20 0"
+        width="150"
+        height="50"
+        rotation="0 90 0"
+      >
+      </a-plane>
+      <a-plane
+        id="wall3"
+        color="orange"
+        position="75 20 0"
+        width="150"
+        height="50"
+        rotation="0 -90 0"
+      >
+      </a-plane>
+
+      <a-plane
+        id="wall4"
+        position="0 45 0"
+        rotation="90 0 0"
+        color="orange"
+        scale="150 150 0.1"
+      ></a-plane>
     </a-scene>
 
     <div class="score">0</div>
